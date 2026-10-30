@@ -1,6 +1,11 @@
 # Amulet Plugins by Wizard Keen
 
-Operations for [Amulet Map Editor](https://www.amuletmc.com/), the Minecraft world editor.
+Operations for [Amulet Map Editor](https://www.amuletmc.com/), the Minecraft world editor. Together they help you work out how a map's logic fits together without flying around clicking on things.
+
+- **[Command Block Reader](#command-block-reader)**: every command block and chain, in run order.
+- **[NPC Reader](#npc-reader)**: every NPC's dialogue, buttons and commands, plus the functions and dialogue scenes they trigger. Bedrock only.
+
+Both plugins only read the world. They never change anything.
 
 ## Command Block Reader
 
@@ -71,6 +76,72 @@ At the top of the file:
 - A Bedrock Edition world (1.26.60), with 124 command blocks across 3,776 chunks
 
 It should work with Java Edition worlds too, but this hasn't been tested yet. Reports from Java users are welcome.
+
+## NPC Reader
+
+Finds every NPC in your selection, or the whole dimension if nothing is selected, and writes a report of what each one says and does. Bedrock Edition only.
+
+For each NPC, the report gives:
+
+- position (block and exact coordinates) and which way it faces
+- name, skin and tags
+- dialogue text
+- each button and the commands it runs
+- commands that run when the dialogue opens or closes
+
+It also looks inside the world's behaviour and resource packs:
+
+- **Functions:** any function an NPC calls is shown with its contents underneath, following nested calls (loops and missing functions are flagged).
+- **Dialogue scenes:** if an NPC opens a `/dialogue` scene, the scene's text, buttons and commands are shown too.
+- **Translations:** text stored as translation keys (as Marketplace maps do) is looked up in the pack's `.lang` files, so you see the actual words.
+- **Appendices:** functions that run every tick, every dialogue scene, and every function in the pack.
+
+### Example report
+
+```
+NPC 3: "Gatekeeper (gate.npc)"
+------------------------------------------------------------
+  At block (-40, 64, 12)   exact (-39.5, 64.0, 12.5)   facing east
+  Skin: 7
+  Dialogue:
+    Only those who have found all three keys may pass. (gate.dialogue)
+  On open:
+    > /tag @p add met_gatekeeper
+  Button "Open the gate (gate.button)":
+    > /function gate/check
+  Functions called:
+      function gate/check  [My Adventure Map]
+        | execute as @p[tag=key1,tag=key2,tag=key3] run function gate/open
+            function gate/open  [My Adventure Map]
+              | fill -38 64 10 -38 66 14 air
+              | playsound random.door_open @p
+```
+
+### Install and use
+
+Same as the Command Block Reader: put `npc_reader.py` in Amulet's `plugins\operations` folder, restart Amulet, open the world, then run **NPC Reader** from the Operations tab. Reports are saved to
+`...\AmuletMapEditor\plugins\npc_reports\`
+
+### How it works
+
+Amulet's normal entity loading doesn't see entities in current Bedrock worlds, so the NPC Reader reads the world's database directly. It still only reads.
+
+### Settings
+
+| Setting | Default | What it does |
+|---|---|---|
+| `OUTPUT_FOLDER` | `""` | Where reports are saved. Leave blank for the default folder. |
+| `WRITE_JSON` | `True` | Also write a `.json` copy. |
+| `FUNCTION_DEPTH` | `3` | How deep to follow functions that call other functions. |
+| `LIST_ALL_FUNCTIONS` | `True` | Add an appendix with every function in the packs. |
+| `LANGUAGES` | `["en_GB", "en_US"]` | Which `.lang` files to use for text, in order of preference. |
+| `SHOW_TRANSLATION_KEYS` | `True` | Show each translation key next to its text. |
+| `EXTRA_PACK_FOLDERS` | `[]` | Extra pack folders to search, if a world's packs aren't inside its folder. |
+
+### Tested with
+
+- Amulet 0.10.66 on Windows
+- A Bedrock Edition world (1.26.60) with 66 NPCs, 82 functions and 13 dialogue scenes
 
 ## Licence
 
