@@ -4,7 +4,7 @@ Operations for [Amulet Map Editor](https://www.amuletmc.com/), the Minecraft wor
 
 ## Command Block Reader
 
-Finds every command block in a world, reads it and writes a report. Command block chains are listed in the order they run, so you can see how a map's logic works without flying around clicking on blocks.
+Finds every command block in your selection (or, optionally, the whole world), reads it and writes a report. Command block chains are listed in the order they run, so you can see how a map's logic works without flying around clicking on blocks.
 
 For each command block, the report gives:
 
