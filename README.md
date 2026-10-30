@@ -4,7 +4,7 @@ Operations for [Amulet Map Editor](https://www.amuletmc.com/), the Minecraft wor
 
 ## Command Block Reader
 
-Finds every command block in your selection (or, optionally, the whole world), reads it and writes a report. Command block chains are listed in the order they run, so you can see how a map's logic works without flying around clicking on blocks.
+Finds every command block in your selection, or the whole world if nothing is selected, reads it and writes a report. Command block chains are listed in the order they run, so you can see how a map's logic works without flying around clicking on blocks.
 
 For each command block, the report gives:
 
@@ -47,7 +47,7 @@ A `.json` copy of the report is saved alongside the `.txt`, in case you want to 
 ### Use
 
 1. **Back up your world first.** The plugin only reads, but it's good practice.
-2. Open the world in Amulet's 3D editor and drag a selection box around the area you want to scan.
+2. Open the world in Amulet's 3D editor. Drag a selection box around the area you want to scan, or select nothing to scan the whole dimension you're viewing (Overworld, Nether or End).
 3. Go to the **Operations** tab, choose **Command Block Reader** and press **Run Operation**.
 4. The console tells you how many command blocks it found and where it saved the report. By default that's
    `...\AmuletMapEditor\plugins\command_block_reports\`
